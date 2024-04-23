@@ -9,3 +9,65 @@ https://colab.research.google.com/drive/1gSQ-Nm00TlxTGRlU6UgLn5R7kAiiJEvy?authus
 
 
 
+
+
+
+
+
+
+Here are the important key points from the provided Group B Deep Learning Assignment No: 2A:
+
+- **Objective**: The objective is to classify movie reviews from the IMDB dataset into positive and negative sentiments using deep neural networks.
+- **Prerequisites**: Basic programming language knowledge, understanding of classification concepts, and familiarity with deep neural networks.
+- **Theory Contents**:
+  1. **Classification**: Categorizing data into predefined classes based on features.
+  2. **Deep Neural Network for Classification**: DNNs automatically learn relevant features and map them to output classes.
+  3. **IMDB Dataset**: A collection of movie reviews labeled as positive or negative.
+- **Data Preparation**:
+  - IMDB dataset contains 50,000 movie reviews split into training and testing sets.
+  - Each review is represented as a sequence of words, encoded as integers.
+- **Model Building**:
+  - Vectorization of sequences and data splitting for training and testing.
+  - Sequential model creation using Keras, with dense layers and dropout regularization.
+  - Adam optimizer, binary cross-entropy loss, and accuracy metric are used for compilation.
+- **Training**:
+  - Training the model with the training data, specifying epochs and batch size.
+  - Early stopping implemented with a callback to monitor loss.
+- **Evaluation**:
+  - Model performance evaluated using test data, calculating loss and accuracy.
+- **Assignment Questions**:
+  1. Definition of binary classification.
+  2. Explanation of binary cross-entropy.
+  3. Meaning of validation split in training data.
+  4. Understanding of epoch cycle in training.
+  5. Explanation of the Adam optimizer.
+
+These key points summarize the process of binary classification using deep neural networks on the IMDB dataset, along with relevant theoretical concepts and practical implementation details.
+
+
+
+
+
+
+
+
+
+
+Sure, here's a simplified summary:
+
+- **Goal**: Sort movie reviews into "positive" or "negative" categories using computers.
+- **Basics**: Understand programming, classification (sorting things into groups), and deep neural networks (computer systems that can learn and make decisions).
+- **Theory**:
+  - **Classification**: Grouping data based on similarities.
+  - **Deep Neural Networks for Classification**: Computer systems that learn to group things by themselves.
+  - **IMDB Dataset**: A bunch of movie reviews labeled as good or bad.
+- **Data**: Movie reviews turned into numbers so computers can understand them.
+- **Model**: Making a computer program that learns from the reviews.
+- **Training**: Teaching the program using some reviews and checking if it's doing a good job.
+- **Testing**: Checking how well the program can sort reviews it hasn't seen before.
+- **Questions**:
+  1. What's sorting reviews into just two groups called?
+  2. What's a special math term for comparing predictions to the real answers?
+  3. How do we make sure our program isn't just remembering the reviews it learned?
+  4. What's the name for each time our program learns from all the reviews?
+  5. What's the special way our program uses math to improve itself while learning?
