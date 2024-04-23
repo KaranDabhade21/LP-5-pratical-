@@ -5,3 +5,78 @@ Convolutional neural network (CNN): Use MNIST Fashion Dataset and create a class
 https://dsrajnor.wordpress.com/lp-v/
 
 https://colab.research.google.com/drive/1j8tmP1-eeAKeaxwOQk4y5XcL0cRcIDey#scrollTo=g6gwec8jYnpV
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Here are the key points from Assignment No: 3B:
+
+1. **Classification**: Sorting data into predefined classes based on features, like categorizing emails as spam or not spam.
+
+2. **CNN (Convolutional Neural Network)**: A type of deep neural network designed for image tasks, automatically learning and extracting features from images.
+
+3. **MNIST Fashion Dataset**: A collection of 70,000 grayscale images of fashion items categorized into 10 classes, used for benchmarking image classification algorithms.
+
+4. **CNN Architecture**:
+   - Convolutional layers: Apply filters to extract features.
+   - Pooling layers: Downsample feature maps to reduce dimensions.
+   - Dropout: Prevents overfitting by randomly dropping neurons.
+   - Fully connected layers: Perform classification based on extracted features.
+
+5. **Model Training**:
+   - Preprocess data: Normalize pixel values and reshape images.
+   - Define CNN architecture.
+   - Compile model with loss function and optimizer.
+   - Train model on training data.
+   - Evaluate model performance on test data.
+
+6. **Assignment Questions**:
+   - Basic concepts like binary classification, binary cross entropy, validation split, epoch cycle, and Adam optimizer are addressed.
+
+Overall, the assignment teaches how to classify fashion clothing into categories using CNNs, with theoretical explanations, code examples, and assignment questions.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sure, here's a simplified summary:
+
+1. **Classification**: Sorting data into groups based on certain features, like categorizing emails as spam or not spam.
+
+2. **CNN (Convolutional Neural Network)**: A special type of computer program that's great at recognizing and understanding images.
+
+3. **MNIST Fashion Dataset**: A big collection of black and white pictures of clothes used to teach computers how to recognize different types of clothing.
+
+4. **CNN Architecture**: It's like a recipe for a computer program that helps it understand images better by breaking them down into smaller parts.
+
+5. **Model Training**: Teaching the computer program to recognize different clothes by showing it lots of pictures and telling it what each picture is.
+
+6. **Assignment Questions**: Basic questions to make sure you understand the main concepts, like what binary classification means or how a specific optimization method works.
