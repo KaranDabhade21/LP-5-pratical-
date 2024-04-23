@@ -5,3 +5,77 @@ Multiclass classification using Deep Neural Networks: Example: Use the OCR lette
 
 https://colab.research.google.com/drive/1Ek8yDC1lHYxd0rtMaxTazgXIDVJWuoqf
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Key points from Assignment No: 2B:
+
+1. **Multiclass classification**:
+   - Sorting data into three or more categories instead of just two (binary classification).
+   - Used in various fields like image classification, text classification, disease diagnosis, etc.
+  
+2. **Example of Multiclass Classification**:
+   - Image classification: Sorting images into multiple categories like cats, dogs, birds.
+   - Text classification: Sorting text documents into categories like politics, sports, entertainment.
+   - Disease diagnosis: Classifying patients into disease categories like diabetes, cancer, heart disease.
+   
+3. **How Deep Neural Networks Work on Multiclass Classification**:
+   - Using neural networks to learn patterns and features from data to classify them into multiple classes.
+   - Model architecture typically consists of input, hidden, and output layers.
+   - Activation functions like softmax are used in the output layer for multiclass classification.
+   
+4. **Code Explanation with Output**:
+   - Loading OCR letter recognition dataset from UCI Machine Learning Repository.
+   - Preprocessing data, reshaping images, and normalizing pixel values.
+   - Defining a neural network model using Keras Sequential API.
+   - Compiling the model with appropriate loss function, optimizer, and metrics.
+   - Training the model on training data and evaluating its performance on test data.
+   - Important concepts covered in the code include batch size, dropout, RMSprop optimizer, softmax function, and ReLU function.
+   
+5. **Assignment Questions**:
+   - Questions covering concepts like batch size, dropout, RMSprop optimizer, softmax function, and ReLU function.
+
+Overall, the assignment focuses on understanding multiclass classification using deep neural networks, implementing a neural network model using Keras, and covering key concepts and questions related to deep learning techniques.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sure, here are the key points from the assignment in simple terms:
+
+1. **Multiclass classification**: Sorting data into more than two categories, like identifying different types of animals from images.
+  
+2. **Examples**:
+   - Sorting images of animals into categories like cats, dogs, birds.
+   - Sorting text documents into categories like politics, sports, entertainment.
+
+3. **How Deep Neural Networks Work**: Using networks to learn patterns from data and categorize them.
+   
+4. **Code Explanation**:
+   - Loading and preparing data for classification.
+   - Building a neural network model.
+   - Training the model and evaluating its performance.
+   
+5. **Assignment Questions**:
+   - Asking about basic concepts like batch size, dropout, optimization techniques, and activation functions.
+
+Overall, the assignment teaches how to classify data into multiple categories using deep learning, and it includes practical coding examples and theoretical questions.
