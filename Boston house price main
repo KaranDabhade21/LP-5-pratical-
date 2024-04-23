@@ -59,3 +59,75 @@ https://www.kaggle.com/code/shreayan98c/boston-house-price-prediction
 8. Missing Attribute Values:  None.
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sure, here are the key points from the provided assignment:
+
+1. **Linear Regression**: 
+   - It's a statistical approach to model the relationship between a dependent variable and one or more independent variables.
+   - Assumes a linear relationship between variables and estimates coefficients to best fit the data.
+
+2. **Deep Neural Network (DNN)**:
+   - Modeled after the human brain, consisting of multiple layers of interconnected neurons.
+   - Learns from data to make predictions or classifications.
+   - Composed of input, hidden, and output layers, with each layer performing specific processing tasks.
+   - Trained using backpropagation to adjust weights and biases based on prediction errors.
+
+3. **Concept of Standardization**:
+   - Standardization scales each feature to have zero mean and unit variance.
+   - Ensures all features contribute equally to the model.
+   - Common preprocessing step in machine learning.
+
+4. **Splitting Data into Train and Test**:
+   - Train set is used to train the model, while the test set is used to evaluate its performance.
+   - Prevents overfitting by testing on unseen data.
+   - Helps assess the model's generalization ability.
+
+5. **Applications of Deep Neural Networks**:
+   - Image and speech recognition.
+   - Natural language processing.
+   - Recommendation systems.
+   - Financial forecasting.
+   - Healthcare diagnostics.
+   - Autonomous vehicles.
+   - Drug discovery.
+   - Game playing (e.g., AlphaGo).
+   - Robotics.
+These points summarize the core concepts and applications discussed in the assignment.
+
+
+
+
+
+1. **Linear Regression**: It's like drawing a straight line through data points to understand their relationship. For example, predicting house prices based on factors like size and location.
+
+2. **Deep Neural Network (DNN)**: Think of it as a brain-inspired model made up of layers of connected nodes. It learns from examples to make predictions, like recognizing objects in images or understanding speech.
+
+3. **Standardization**: Making sure all data features play fair by giving them the same scale. Imagine everyone speaking the same language so that no one's voice gets drowned out.
+
+4. **Splitting Data**: Imagine studying for a test. You practice with some questions (training data) but save some for the actual test (test data) to see how well you've really learned.
+
+5. **Applications of DNNs**: They're like super-smart Swiss Army knives. They can do tons of things, from recognizing faces in photos to suggesting what to watch next on Netflix.
+
+
