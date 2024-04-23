@@ -1,0 +1,594 @@
+Boston house price prediction
+add Codeadd Markdown
+The problem that we are going to solve here is that given a set of features that describe a house in Boston, our machine learning model must predict the house price. To train our machine learning model with boston housing data, we will be using scikit-learn’s boston dataset.
+
+In this dataset, each row describes a boston town or suburb. There are 506 rows and 13 attributes (features) with a target column (price). https://archive.ics.uci.edu/ml/machine-learning-databases/housing/housing.names
+
+add Codeadd Markdown
+# Importing the libraries 
+import pandas as pd
+import numpy as np
+from sklearn import metrics
+import matplotlib.pyplot as plt
+import seaborn as sns
+%matplotlib inline
+
+
+# Importing the Boston Housing dataset
+from sklearn.datasets import load_boston
+boston = load_boston()
+
+
+# Initializing the dataframe
+data = pd.DataFrame(boston.data)
+
+
+# See head of the dataset
+data.head()
+
+0	1	2	3	4	5	6	7	8	9	10	11	12
+0	0.00632	18.0	2.31	0.0	0.538	6.575	65.2	4.0900	1.0	296.0	15.3	396.90	4.98
+1	0.02731	0.0	7.07	0.0	0.469	6.421	78.9	4.9671	2.0	242.0	17.8	396.90	9.14
+2	0.02729	0.0	7.07	0.0	0.469	7.185	61.1	4.9671	2.0	242.0	17.8	392.83	4.03
+3	0.03237	0.0	2.18	0.0	0.458	6.998	45.8	6.0622	3.0	222.0	18.7	394.63	2.94
+4	0.06905	0.0	2.18	0.0	0.458	7.147	54.2	6.0622	3.0	222.0	18.7	396.90	5.33
+
+
+#Adding the feature names to the dataframe
+data.columns = boston.feature_names
+data.head()
+
+CRIM	ZN	INDUS	CHAS	NOX	RM	AGE	DIS	RAD	TAX	PTRATIO	B	LSTAT
+0	0.00632	18.0	2.31	0.0	0.538	6.575	65.2	4.0900	1.0	296.0	15.3	396.90	4.98
+1	0.02731	0.0	7.07	0.0	0.469	6.421	78.9	4.9671	2.0	242.0	17.8	396.90	9.14
+2	0.02729	0.0	7.07	0.0	0.469	7.185	61.1	4.9671	2.0	242.0	17.8	392.83	4.03
+3	0.03237	0.0	2.18	0.0	0.458	6.998	45.8	6.0622	3.0	222.0	18.7	394.63	2.94
+4	0.06905	0.0	2.18	0.0	0.458	7.147	54.2	6.0622	3.0	222.0	18.7	396.90	5.33
+
+
+
+#CRIM per capita crime rate by town
+ZN proportion of residential land zoned for lots over 25,000 sq.ft.
+INDUS proportion of non-retail business acres per town
+CHAS Charles River dummy variable (= 1 if tract bounds river; 0 otherwise)
+NOX nitric oxides concentration (parts per 10 million)
+RM average number of rooms per dwelling
+AGE proportion of owner-occupied units built prior to 1940
+DIS weighted distances to five Boston employment centres
+RAD index of accessibility to radial highways
+TAX full-value property-tax rate per 10,000usd
+PTRATIO pupil-teacher ratio by town
+B 1000(Bk - 0.63)^2 where Bk is the proportion of blacks by town
+LSTAT % lower status of the population#
+
+Each record in the database describes a Boston suburb or town.
+
+
+
+#Adding target variable to dataframe
+data['PRICE'] = boston.target 
+# Median value of owner-occupied homes in $1000s
+
+
+
+#Check the shape of dataframe
+data.shape
+(506, 14)
+
+
+data.columns
+Index(['CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX',
+       'PTRATIO', 'B', 'LSTAT', 'PRICE'],
+      dtype='object')
+
+
+data.dtypes
+
+CRIM       float64
+ZN         float64
+INDUS      float64
+CHAS       float64
+NOX        float64
+RM         float64
+AGE        float64
+DIS        float64
+RAD        float64
+TAX        float64
+PTRATIO    float64
+B          float64
+LSTAT      float64
+PRICE      float64
+dtype: object
+
+
+# Identifying the unique number of values in the dataset
+data.nunique()
+
+CRIM       504
+ZN          26
+INDUS       76
+CHAS         2
+NOX         81
+RM         446
+AGE        356
+DIS        412
+RAD          9
+TAX         66
+PTRATIO     46
+B          357
+LSTAT      455
+PRICE      229
+dtype: int64
+
+
+# Check for missing values
+data.isnull().sum()
+CRIM       0
+ZN         0
+INDUS      0
+CHAS       0
+NOX        0
+RM         0
+AGE        0
+DIS        0
+RAD        0
+TAX        0
+PTRATIO    0
+B          0
+LSTAT      0
+PRICE      0
+dtype: int64
+
+
+# See rows with missing values
+data[data.isnull().any(axis=1)]
+CRIM	ZN	INDUS	CHAS	NOX	RM	AGE	DIS	RAD	TAX	PTRATIO	B	LSTAT	PRICE
+
+
+# Viewing the data statistics
+data.describe()
+CRIM	ZN	INDUS	CHAS	NOX	RM	AGE	DIS	RAD	TAX	PTRATIO	B	LSTAT	PRICE
+count	506.000000	506.000000	506.000000	506.000000	506.000000	506.000000	506.000000	506.000000	506.000000	506.000000	506.000000	506.000000	506.000000	506.000000
+mean	3.613524	11.363636	11.136779	0.069170	0.554695	6.284634	68.574901	3.795043	9.549407	408.237154	18.455534	356.674032	12.653063	22.532806
+std	8.601545	23.322453	6.860353	0.253994	0.115878	0.702617	28.148861	2.105710	8.707259	168.537116	2.164946	91.294864	7.141062	9.197104
+min	0.006320	0.000000	0.460000	0.000000	0.385000	3.561000	2.900000	1.129600	1.000000	187.000000	12.600000	0.320000	1.730000	5.000000
+25%	0.082045	0.000000	5.190000	0.000000	0.449000	5.885500	45.025000	2.100175	4.000000	279.000000	17.400000	375.377500	6.950000	17.025000
+50%	0.256510	0.000000	9.690000	0.000000	0.538000	6.208500	77.500000	3.207450	5.000000	330.000000	19.050000	391.440000	11.360000	21.200000
+75%	3.677083	12.500000	18.100000	0.000000	0.624000	6.623500	94.075000	5.188425	24.000000	666.000000	20.200000	396.225000	16.955000	25.000000
+max	88.976200	100.000000	27.740000	1.000000	0.871000	8.780000	100.000000	12.126500	24.000000	711.000000	22.000000	396.900000	37.970000	50.000000
+
+
+# Finding out the correlation between the features
+corr = data.corr()
+corr.shape
+(14, 14)
+
+
+# Plotting the heatmap of correlation between features
+plt.figure(figsize=(20,20))
+sns.heatmap(corr, cbar=True, square= True, fmt='.1f', annot=True, annot_kws={'size':15}, cmap='Greens')
+
+<matplotlib.axes._subplots.AxesSubplot at 0x7893f8ad93c8>
+
+
+
+# Spliting target variable and independent variables
+X = data.drop(['PRICE'], axis = 1)
+y = data['PRICE']
+
+
+# Splitting to training and testing data
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X,y, test_size = 0.3, random_state = 4)
+
+
+#Linear regression
+
+#Training the model
+
+
+# Import library for Linear Regression
+from sklearn.linear_model import LinearRegression
+​
+# Create a Linear regressor
+lm = LinearRegression()
+​
+# Train the model using the training sets 
+lm.fit(X_train, y_train)
+
+LinearRegression(copy_X=True, fit_intercept=True, n_jobs=None,
+         normalize=False)
+
+
+# Value of y intercept
+lm.intercept_
+36.357041376595696
+
+
+#Converting the coefficient values to a dataframe
+coeffcients = pd.DataFrame([X_train.columns,lm.coef_]).T
+coeffcients = coeffcients.rename(columns={0: 'Attribute', 1: 'Coefficients'})
+coeffcients
+Attribute	Coefficients
+0	CRIM	-0.12257
+1	ZN	0.0556777
+2	INDUS	-0.00883428
+3	CHAS	4.69345
+4	NOX	-14.4358
+5	RM	3.28008
+6	AGE	-0.00344778
+7	DIS	-1.55214
+8	RAD	0.32625
+9	TAX	-0.0140666
+10	PTRATIO	-0.803275
+11	B	0.00935369
+12	LSTAT	-0.523478
+
+
+#Model Evaluation
+
+
+# Model prediction on train data
+y_pred = lm.predict(X_train)
+
+
+# Model Evaluation
+print('R^2:',metrics.r2_score(y_train, y_pred))
+print('Adjusted R^2:',1 - (1-metrics.r2_score(y_train, y_pred))*(len(y_train)-1)/(len(y_train)-X_train.shape[1]-1))
+print('MAE:',metrics.mean_absolute_error(y_train, y_pred))
+print('MSE:',metrics.mean_squared_error(y_train, y_pred))
+print('RMSE:',np.sqrt(metrics.mean_squared_error(y_train, y_pred)))
+
+R^2: 0.7465991966746854
+Adjusted R^2: 0.736910342429894
+MAE: 3.089861094971129
+MSE: 19.073688703469028
+RMSE: 4.367343437774161
+
+
+#𝑅^2 : It is a measure of the linear relationship between X and Y. It is interpreted as the proportion of the variance in the dependent variable that is predictable from the independent variable.
+
+Adjusted 𝑅^2 :The adjusted R-squared compares the explanatory power of regression models that contain different numbers of predictors.
+
+MAE : It is the mean of the absolute value of the errors. It measures the difference between two continuous variables, here actual and predicted values of y. 
+
+MSE: The mean square error (MSE) is just like the MAE, but squares the difference before summing them all instead of using the absolute value. 
+
+RMSE: The mean square error (MSE) is just like the MAE, but squares the difference before summing them all instead of using the absolute value. 
+
+
+# Visualizing the differences between actual prices and predicted values
+plt.scatter(y_train, y_pred)
+plt.xlabel("Prices")
+plt.ylabel("Predicted prices")
+plt.title("Prices vs Predicted prices")
+plt.show()
+
+
+# Checking residuals
+plt.scatter(y_pred,y_train-y_pred)
+plt.title("Predicted vs residuals")
+plt.xlabel("Predicted")
+plt.ylabel("Residuals")
+plt.show()
+
+
+#There is no pattern visible in this plot and values are distributed equally around zero. So Linearity assumption is satisfied
+
+
+# Checking Normality of errors
+sns.distplot(y_train-y_pred)
+plt.title("Histogram of Residuals")
+plt.xlabel("Residuals")
+plt.ylabel("Frequency")
+plt.show()
+
+/opt/conda/lib/python3.6/site-packages/scipy/stats/stats.py:1713: FutureWarning: Using a non-tuple sequence for multidimensional indexing is deprecated; use `arr[tuple(seq)]` instead of `arr[seq]`. In the future this will be interpreted as an array index, `arr[np.array(seq)]`, which will result either in an error or a different result.
+  return np.add.reduce(sorted[indexer] * weights, axis=axis) / sumval
+
+
+#Here the residuals are normally distributed. So normality assumption is satisfied
+
+
+#For test data
+
+
+# Predicting Test data with the model
+y_test_pred = lm.predict(X_test)
+
+
+# Model Evaluation
+acc_linreg = metrics.r2_score(y_test, y_test_pred)
+print('R^2:', acc_linreg)
+print('Adjusted R^2:',1 - (1-metrics.r2_score(y_test, y_test_pred))*(len(y_test)-1)/(len(y_test)-X_test.shape[1]-1))
+print('MAE:',metrics.mean_absolute_error(y_test, y_test_pred))
+print('MSE:',metrics.mean_squared_error(y_test, y_test_pred))
+print('RMSE:',np.sqrt(metrics.mean_squared_error(y_test, y_test_pred)))
+R^2: 0.7121818377409195
+Adjusted R^2: 0.6850685326005713
+MAE: 3.859005592370746
+MSE: 30.053993307124134
+RMSE: 5.482152251362975
+
+
+#Here the model evaluations scores are almost matching with that of train data. So the model is not overfitting.
+
+#Random Forest Regressor
+
+#Train the model
+
+# Import Random Forest Regressor
+from sklearn.ensemble import RandomForestRegressor
+# Create a Random Forest Regressor
+reg = RandomForestRegressor()
+# Train the model using the training sets 
+reg.fit(X_train, y_train)
+
+/opt/conda/lib/python3.6/site-packages/sklearn/ensemble/forest.py:246: FutureWarning: The default value of n_estimators will change from 10 in version 0.20 to 100 in 0.22.
+  "10 in version 0.20 to 100 in 0.22.", FutureWarning)
+RandomForestRegressor(bootstrap=True, criterion='mse', max_depth=None,
+           max_features='auto', max_leaf_nodes=None,
+           min_impurity_decrease=0.0, min_impurity_split=None,
+           min_samples_leaf=1, min_samples_split=2,
+           min_weight_fraction_leaf=0.0, n_estimators=10, n_jobs=None,
+           oob_score=False, random_state=None, verbose=0, warm_start=False)
+
+
+#Model Evaluation
+
+# Model prediction on train data
+y_pred = reg.predict(X_train)
+
+
+# Model Evaluation
+print('R^2:',metrics.r2_score(y_train, y_pred))
+print('Adjusted R^2:',1 - (1-metrics.r2_score(y_train, y_pred))*(len(y_train)-1)/(len(y_train)-X_train.shape[1]-1))
+print('MAE:',metrics.mean_absolute_error(y_train, y_pred))
+print('MSE:',metrics.mean_squared_error(y_train, y_pred))
+print('RMSE:',np.sqrt(metrics.mean_squared_error(y_train, y_pred)))
+R^2: 0.9719402933301396
+Adjusted R^2: 0.9708674221927627
+MAE: 0.8851412429378529
+MSE: 2.1120774011299437
+RMSE: 1.4532987996726425
+
+
+# Visualizing the differences between actual prices and predicted values
+plt.scatter(y_train, y_pred)
+plt.xlabel("Prices")
+plt.ylabel("Predicted prices")
+plt.title("Prices vs Predicted prices")
+plt.show()
+
+
+# Checking residuals
+plt.scatter(y_pred,y_train-y_pred)
+plt.title("Predicted vs residuals")
+plt.xlabel("Predicted")
+plt.ylabel("Residuals")
+plt.show()
+
+
+#For test data
+
+# Predicting Test data with the model
+y_test_pred = reg.predict(X_test)
+
+# Model Evaluation
+acc_rf = metrics.r2_score(y_test, y_test_pred)
+print('R^2:', acc_rf)
+print('Adjusted R^2:',1 - (1-metrics.r2_score(y_test, y_test_pred))*(len(y_test)-1)/(len(y_test)-X_test.shape[1]-1))
+print('MAE:',metrics.mean_absolute_error(y_test, y_test_pred))
+print('MSE:',metrics.mean_squared_error(y_test, y_test_pred))
+print('RMSE:',np.sqrt(metrics.mean_squared_error(y_test, y_test_pred)))
+R^2: 0.837922306469951
+Adjusted R^2: 0.8226541179490043
+MAE: 2.5159210526315787
+MSE: 16.924164473684208
+RMSE: 4.113898938195274
+
+
+#XGBoost Regressor
+
+#Training the model
+
+# Import XGBoost Regressor
+from xgboost import XGBRegressor
+#Create a XGBoost Regressor
+reg = XGBRegressor()
+# Train the model using the training sets 
+reg.fit(X_train, y_train)
+
+XGBRegressor(base_score=0.5, booster='gbtree', colsample_bylevel=1,
+       colsample_bytree=1, gamma=0, learning_rate=0.1, max_delta_step=0,
+       max_depth=3, min_child_weight=1, missing=None, n_estimators=100,
+       n_jobs=1, nthread=None, objective='reg:linear', random_state=0,
+       reg_alpha=0, reg_lambda=1, scale_pos_weight=1, seed=None,
+       silent=True, subsample=1)
+
+
+#max_depth (int) – Maximum tree depth for base learners.
+
+learning_rate (float) – Boosting learning rate (xgb’s “eta”)
+
+n_estimators (int) – Number of boosted trees to fit.
+
+gamma (float) – Minimum loss reduction required to make a further partition on a leaf node of the tree.
+
+min_child_weight (int) – Minimum sum of instance weight(hessian) needed in a child.
+
+subsample (float) – Subsample ratio of the training instance.
+
+colsample_bytree (float) – Subsample ratio of columns when constructing each tree.
+
+objective (string or callable) – Specify the learning task and the corresponding learning objective or a custom objective function to be used (see note below).
+
+nthread (int) – Number of parallel threads used to run xgboost. (Deprecated, please use n_jobs)
+
+scale_pos_weight (float) – Balancing of positive and negative weights.#
+
+
+
+#Model Evaluation
+
+# Model prediction on train data
+y_pred = reg.predict(X_train)
+
+
+# Model Evaluation
+print('R^2:',metrics.r2_score(y_train, y_pred))
+print('Adjusted R^2:',1 - (1-metrics.r2_score(y_train, y_pred))*(len(y_train)-1)/(len(y_train)-X_train.shape[1]-1))
+print('MAE:',metrics.mean_absolute_error(y_train, y_pred))
+print('MSE:',metrics.mean_squared_error(y_train, y_pred))
+print('RMSE:',np.sqrt(metrics.mean_squared_error(y_train, y_pred)))
+R^2: 0.9703652512761263
+Adjusted R^2: 0.9692321579425663
+MAE: 1.1372202838208043
+MSE: 2.230632123289034
+RMSE: 1.4935300878419002
+
+
+# Visualizing the differences between actual prices and predicted values
+plt.scatter(y_train, y_pred)
+plt.xlabel("Prices")
+plt.ylabel("Predicted prices")
+plt.title("Prices vs Predicted prices")
+plt.show()
+
+
+# Checking residuals
+plt.scatter(y_pred,y_train-y_pred)
+plt.title("Predicted vs residuals")
+plt.xlabel("Predicted")
+plt.ylabel("Residuals")
+plt.show()
+
+
+#For test data
+
+#Predicting Test data with the model
+y_test_pred = reg.predict(X_test)
+
+
+# Model Evaluation
+acc_xgb = metrics.r2_score(y_test, y_test_pred)
+print('R^2:', acc_xgb)
+print('Adjusted R^2:',1 - (1-metrics.r2_score(y_test, y_test_pred))*(len(y_test)-1)/(len(y_test)-X_test.shape[1]-1))
+print('MAE:',metrics.mean_absolute_error(y_test, y_test_pred))
+print('MSE:',metrics.mean_squared_error(y_test, y_test_pred))
+print('RMSE:',np.sqrt(metrics.mean_squared_error(y_test, y_test_pred)))
+R^2: 0.8494894736313225
+Adjusted R^2: 0.8353109457849979
+MAE: 2.4509708843733136
+MSE: 15.716320042597493
+RMSE: 3.9643814199188117
+
+
+
+#SVM Regressor
+
+# Creating scaled set to be used in model to improve our results
+from sklearn.preprocessing import StandardScaler
+sc = StandardScaler()
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+
+#Train the model
+
+# Import SVM Regressor
+from sklearn import svm
+# Create a SVM Regressor
+reg = svm.SVR()
+
+
+# Train the model using the training sets 
+reg.fit(X_train, y_train)
+
+SVR(C=1.0, cache_size=200, coef0=0.0, degree=3, epsilon=0.1,
+  gamma='auto_deprecated', kernel='rbf', max_iter=-1, shrinking=True,
+  tol=0.001, verbose=False)
+
+
+#C : float, optional (default=1.0): The penalty parameter of the error term. It controls the trade off between smooth decision boundary and classifying the training points correctly.
+
+kernel : string, optional (default='rbf’): kernel parameters selects the type of hyperplane used to separate the data. It must be one of 'linear', 'poly', 'rbf', 'sigmoid', 'precomputed’ or a callable.
+
+degree : int, optional (default=3): Degree of the polynomial kernel function (‘poly’). Ignored by all other kernels.
+
+gamma : float, optional (default='auto’): It is for non linear hyperplanes. The higher the gamma value it tries to exactly fit the training data set. Current default is 'auto' which uses 1 / n_features.
+
+coef0 : float, optional (default=0.0): Independent term in kernel function. It is only significant in 'poly' and 'sigmoid'.
+
+shrinking : boolean, optional (default=True): Whether to use the shrinking heuristic.#
+
+
+#Model Evaluation
+
+# Model prediction on train data
+y_pred = reg.predict(X_train)
+
+
+# Model Evaluation
+print('R^2:',metrics.r2_score(y_train, y_pred))
+print('Adjusted R^2:',1 - (1-metrics.r2_score(y_train, y_pred))*(len(y_train)-1)/(len(y_train)-X_train.shape[1]-1))
+print('MAE:',metrics.mean_absolute_error(y_train, y_pred))
+print('MSE:',metrics.mean_squared_error(y_train, y_pred))
+print('RMSE:',np.sqrt(metrics.mean_squared_error(y_train, y_pred)))
+R^2: 0.6419097248941195
+Adjusted R^2: 0.628218037904777
+MAE: 2.9361501059460293
+MSE: 26.953752101332935
+RMSE: 5.191700309275655
+
+
+# Visualizing the differences between actual prices and predicted values
+plt.scatter(y_train, y_pred)
+plt.xlabel("Prices")
+plt.ylabel("Predicted prices")
+plt.title("Prices vs Predicted prices")
+plt.show()
+
+
+
+# Checking residuals
+plt.scatter(y_pred,y_train-y_pred)
+plt.title("Predicted vs residuals")
+plt.xlabel("Predicted")
+plt.ylabel("Residuals")
+plt.show()
+
+
+
+#For test data
+
+# Predicting Test data with the model
+y_test_pred = reg.predict(X_test)
+
+
+# Model Evaluation
+acc_svm = metrics.r2_score(y_test, y_test_pred)
+print('R^2:', acc_svm)
+print('Adjusted R^2:',1 - (1-metrics.r2_score(y_test, y_test_pred))*(len(y_test)-1)/(len(y_test)-X_test.shape[1]-1))
+print('MAE:',metrics.mean_absolute_error(y_test, y_test_pred))
+print('MSE:',metrics.mean_squared_error(y_test, y_test_pred))
+print('RMSE:',np.sqrt(metrics.mean_squared_error(y_test, y_test_pred)))
+R^2: 0.5900158460478174
+Adjusted R^2: 0.5513941503856553
+MAE: 3.7561453553021686
+MSE: 42.81057499010247
+RMSE: 6.542979060802691
+
+
+#Evaluation and comparision of all the models
+
+
+models = pd.DataFrame({
+    'Model': ['Linear Regression', 'Random Forest', 'XGBoost', 'Support Vector Machines'],
+    'R-squared Score': [acc_linreg*100, acc_rf*100, acc_xgb*100, acc_svm*100]})
+models.sort_values(by='R-squared Score', ascending=False)
+
+Model	R-squared Score
+2	XGBoost	84.948947
+1	Random Forest	83.792231
+0	Linear Regression	71.218184
+3	Support Vector Machines	59.001585
